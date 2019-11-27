@@ -1,0 +1,3 @@
+1. Email Conformance
+2. Save previous username 
+3. Error messages

@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -14,12 +14,15 @@ function createWindow () {
     icon: __dirname + '/uwicon.icns',
     titleBarStyle: 'hiddenInset',
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: true
     }
   })
 
   // and load the index.html of the app.
   mainWindow.loadFile('views/index.html')
+
+  
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
@@ -51,5 +54,13 @@ app.on('activate', function () {
   if (mainWindow === null) createWindow()
 })
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+// Catch the stuff from the submitform
+ipcMain.on('form-submission', async function (event, data) {
+  console.log(data);
+  token = await 
+});
+
+
+
+
+

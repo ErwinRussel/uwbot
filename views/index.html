@@ -7,8 +7,10 @@
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <title>United Wardrobe Bot</title>
 
-    <link rel="stylesheet" type="text/css" href="index.css">
-    <link rel="stylesheet" type="text/css" href="process.css">
+    <link rel="stylesheet" type="text/css" href="../public/css/index.css">
+    <link rel="stylesheet" type="text/css" href="../public/css/process.css">
+    <link rel="stylesheet" type="text/css" href="../public/css/style.css">
+    <script src="../public/js/index.js"></script>
   </head>
   <body>
     <div class="drag-bar">
@@ -17,49 +19,63 @@
     <div class="logo-container">
         <img class="main-logo" src="../assets/uwlogo.png">
     </div>
-    <div class="form-container">
-      <div class="main-form">
-        <form action="">
-          Username:<br>
-          <input type="text" name="username">
-          <br>
-          Password:<br>
-          <input type="password" name="password">
-          <br>
-          <div class="divider"></div>
-          <label class="container"> Follow users 
-              <input type="checkbox" value="follow">
-              <span class="checkmark"></span>
-          </label>
-          <br>
-          User ID of user with followers:<br>
-          <input type="text" name="userFollowers" disabled>
-          <br>
-          Amount:<br>
-          <input type="number" name="followAmount" min="1" max="10000" disabled>
-          <br>
-          <div class="divider"></div>
-          <label class="container"> Unfollow followers 
-              <input type="checkbox" value="unfollowFollowers">
-              <span class="checkmark"></span>
-          </label>
-          <br>
-          <div class="divider"></div>
-          <label class="container"> Unfollow users 
-              <input type="checkbox" value="unfollow">
-              <span class="checkmark"></span>
-          </label> 
-          <br>
-          Amount:<br>
-          <input type="number" name="followAmount" min="1" max="10000" disabled>
-          <br><br>
-          <div class="button-container">
-            <input class="button" type="submit" value="Start">
-          </div>
-        </form> 
+    <div id="main" class="form"> 
+      <div class="form-container">
+        <div class="main-form">
+          <form action="#" id="parameterForm">
+            Username:
+            <input type="text" id="username" name="username">
+            <br>
+            Password:<br>
+            <input type="password" id="password" name="password">
+            <br>
+            <div class="divider"></div>
+            <label class="container"> Follow users 
+                <input type="checkbox" id="enableFollow" value="follow">
+                <span class="checkmark"></span>
+            </label>
+            <br>
+            User ID of user with followers:<br>
+            <input type="text" id="userFollowers" name="userFollowers" disabled>
+            <br>
+            Amount:<br>
+            <input type="number" id="userFollowAmount" name="followAmount" min="1" max="10000" disabled>
+            <br>
+            <div class="divider"></div>
+            <label class="container"> Unfollow followers 
+                <input type="checkbox" id="unfollowFollowers" value="unfollowFollowers">
+                <span class="checkmark"></span>
+            </label>
+            <br>
+            <div class="divider"></div>
+            <label class="container"> Unfollow users 
+                <input type="checkbox" id="enableUnfollow" value="unfollow">
+                <span class="checkmark"></span>
+            </label> 
+            <br>
+            Amount:<br>
+            <input type="number" id="unfollowAmount" name="unfollowAmount" min="1" max="10000" disabled>
+            <br><br>
+            <div class="button-container">
+              <input class="button" id="start" type="submit" value="Start">
+            </div>
+          </form> 
+        </div>
       </div>
     </div>
-    
-
+    <div id="process" class="process"> 
+        <div class="form-container">
+            <div class="main-form">
+                <div class="log-message">
+                  <h1 id="uiLog">All done!</h1>
+                </div>
+                <br><br>
+                <div class="button-container">
+                  <input class="button" id="stop" type="submit" value="Stop">
+                </div>
+              </form> 
+            </div>
+          </div>
+    </div>
   </body>
 </html>
