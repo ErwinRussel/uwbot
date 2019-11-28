@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "jquery": "^3.4.1",
-    "jsdom": "^15.2.1"
+    "jsdom": "^15.2.1",
+    "request": "^2.88.0"
   }
 }

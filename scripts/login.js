@@ -1,29 +1,40 @@
-url = "https://unitedwardrobe.com/api/login"
+var request = require("request");
 
-headers = {
-    'x-version': "4.0.0",
-    'origin': "https://unitedwardrobe.com",
-    'x-uw-session-id': "atz8eSF6cCL2czndwU1XP3ufo",
-    'x-platform': "Web",
-    'content-type': "application/json",
-    'accept': "application/json, text/plain, ",
-    'x-locale': "nl_NL",
-    'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
-    'x-device': "1680x947 - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36",
-    'x-device-id': "0361a35b-47e0-4474-82a2-c44a0ac22505",
-    'cache-control': "no-cache",
-    'postman-token': "4c5ae199-c0b1-24e3-fb0c-63feb36c3425"
-}
-
-module.exports = class Login{
+class Login{
     constructor(arg){
         console.log(arg);
     }
 
-    function getToken(self, username, password){
-        var payload = "{\"username\":\"" + username + "\",\"password\":\"" + password + "\",\"inviter_id\":null}"
-        response = requests.request("POST", url, data=payload, headers=headers)
-        return response.json()
+    static getLogin = function(username, password){
+        var options = { method: 'POST',
+        url: 'https://unitedwardrobe.com/api/login',
+        headers: 
+        { 'postman-token': '5012c104-be45-0214-b81a-43c73546a452',
+            'cache-control': 'no-cache',
+            'x-device-id': '0361a35b-47e0-4474-82a2-c44a0ac22505',
+            'x-device': '1680x947 - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36',
+            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36',
+            'x-locale': 'nl_NL',
+            accept: 'application/json, text/plain, */*',
+            'content-type': 'application/json',
+            'x-platform': 'Web',
+            'x-uw-session-id': 'atz8eSF6cCL2czndwU1XP3ufo',
+            origin: 'https://unitedwardrobe.com',
+            'x-version': '4.0.0' },
+        body: 
+        { username: username,
+            password: password,
+            inviter_id: null },
+        json: true };
+
+        return new Promise((resolve, reject) => {
+            request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+            resolve(body);
+            });
+        });
     }
 }
+
+module.exports = Login;
 

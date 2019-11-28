@@ -34,11 +34,23 @@ $(document).ready(function(){
     $('#parameterForm').submit(function(){
         event.preventDefault();
         // Send data
-        let username = document.getElementById("username").value;
-        let password = document.getElementById("password").value;
+        let username = $("#username").val();
+        let password = $("#password").val();
+        let follow = $("#enableFollow").is(":checked");
+        let userFollowers = $("#userFollowers").val();
+        let followAmount = $("#userFollowAmount").val();
+        let unfollowFollowers = $("#unfollowFollowers").is(":checked");
+        let unfollow = $("#enableUnfollow").is(":checked");
+        let unfollowAmount = $("#unfollowAmount").val();
         var data = {
             username: username, 
-            password: password
+            password: password,
+            follow: follow,
+            userFollowers: userFollowers,
+            followAmount: followAmount,
+            unfollowFollowers: unfollowFollowers,
+            unfollow: unfollow,
+            unfollowAmount: unfollowAmount
         }
         ipcRenderer.send('form-submission', data)
         // Switch pages
@@ -53,10 +65,16 @@ $(document).ready(function(){
     });
 });
 
-// uilog, send messages to the user
-function logUi(message){
-    $('#uiLog').text(message);
+ipcRenderer.on('log', function (event, data) {
+    $('#uiLog').text(data);
+});
+
+ipcRenderer.on('btn'), function (event, data) {
+    $('#stop').val(data);
 }
+
+
+
 
 
 

@@ -52,3 +52,7 @@
     display: inline-block;
     text-decoration: none;
 }
+
+#uiLog {
+    word-wrap: break-word;
+}

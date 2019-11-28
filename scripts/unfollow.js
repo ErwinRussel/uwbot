@@ -8,7 +8,7 @@ module.exports = class unFollow {
         console.log(arg);
     }
 
-    function unfollow_user(token, user){
+    static unfollow_user(token, user){
 
         var unfollowPayload = "{\"follow_id\":\"" + str(user) + "\"}"
 
@@ -34,9 +34,9 @@ module.exports = class unFollow {
     } 
 
 
-    function unfollow(token, user_id, amount){
+    static unfollow(token, user_id, amount){
 
-        var loopSize = int(amount/500) # fix dit
+        var loopSize = int(amount/500) 
 
         for(i = 0; i < loopSize; i++){
             payload = "{\"limit\":500,\"offset\":" + str(i*500) + ",\"user_id\":\"" + user_id + "\"}"
@@ -66,7 +66,7 @@ module.exports = class unFollow {
         }
     }
 
-    function unfollowFollowers(self, token, user_id){
+    static unfollowFollowers(token, user_id){
         payload = "{\"limit\":500,\"offset\":0,\"user_id\":\"" + user_id + "\"}"
             
         headers = {
