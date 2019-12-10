@@ -18,7 +18,7 @@ const store = new Store({
   // We'll call our data file 'user-preferences'
   configName: 'user-preferences',
   defaults: {
-    userName: "John Doe"
+    userName: ""
   }
 });
 
