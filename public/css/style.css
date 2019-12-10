@@ -15,6 +15,20 @@ body {
   display: none;
 }
 
+/* Columns */
+
+.column {
+  float: left;
+  width: 50%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 .divider {
     background-color: #f5f5f5;
     margin-top: 15px;

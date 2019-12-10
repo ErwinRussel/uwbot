@@ -40,6 +40,7 @@ $(document).ready(function(){
         let userFollowers = $("#userFollowers").val();
         let followAmount = $("#userFollowAmount").val();
         let unfollowFollowers = $("#unfollowFollowers").is(":checked");
+        let unfollowNonFollow = $("#unfollowNonFollow").is(":checked");
         let unfollow = $("#enableUnfollow").is(":checked");
         let unfollowAmount = $("#unfollowAmount").val();
         var data = {
@@ -49,6 +50,7 @@ $(document).ready(function(){
             userFollowers: userFollowers,
             followAmount: followAmount,
             unfollowFollowers: unfollowFollowers,
+            unfollowNonFollow: unfollowNonFollow,
             unfollow: unfollow,
             unfollowAmount: unfollowAmount
         }
@@ -65,13 +67,19 @@ $(document).ready(function(){
     });
 });
 
+ipcRenderer.on('usr', function (event, data) {
+    $('#username').val(data);
+});
+
 ipcRenderer.on('log', function (event, data) {
     $('#uiLog').text(data);
 });
 
-ipcRenderer.on('btn'), function (event, data) {
+ipcRenderer.on('btn', function (event, data) {
     $('#stop').val(data);
-}
+});
+
+
 
 
 

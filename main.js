@@ -1,16 +1,27 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
+const Store = require('./store.js')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
 // Get the scripts
-var Login = require('./scripts/login');
-var Follower = require('./scripts/follower');
-var Follow = require('./scripts/follow');
-var Unfollow = require('./scripts/unfollow');
+const Login = require('./scripts/login');
+const Follower = require('./scripts/follower');
+const Follow = require('./scripts/follow');
+const Unfollow = require('./scripts/unfollow');
+
+// Instantiate Store Class
+const store = new Store({
+  // We'll call our data file 'user-preferences'
+  configName: 'user-preferences',
+  defaults: {
+    userName: "John Doe"
+  }
+});
+
 
 function createWindow () {
   // Create the browser window.
@@ -26,11 +37,19 @@ function createWindow () {
   })
 
   // and load the index.html of the app.
-  mainWindow.loadFile('views/index.html')
+  mainWindow.loadFile('views/index.html');
+    // get username from store
 
+  mainWindow.webContents.on('did-finish-load', function() {
+    mainWindow.webContents.send('usr', store.get('userName'));
+  });
+  
+ 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 
+
+  
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
@@ -63,6 +82,9 @@ ipcMain.on('form-submission', async function (event, data) {
   mainWindow.webContents.send('btn', 'Stop');
   mainWindow.webContents.send('log', 'Trying to log in');
 
+  // Set the username in the appData
+  store.set('userName', data.username);
+
   let response = await Login.getLogin(data.username, data.password);
   // Try to get token 
   if(response.success==false){
@@ -70,35 +92,39 @@ ipcMain.on('form-submission', async function (event, data) {
     return;
   } else if(response.success==true) {
     var token = response.token;
+    var uuid = response.user.id;
+    var username = response.user.username;
     mainWindow.webContents.send('log', 'Received Token') // This is maybe too fast
   }
 
   // FOLLOWING
-  console.log(data.follow);
   if(data.follow){
     mainWindow.webContents.send('log', 'Collecting followers of user ' + data.userFollowers);
-    let followers = await Follower.getFollowers(token, data.followAmount, userFollowers)
+    let followers = await Follower.getFollowers(token, data.followAmount, data.userFollowers);
     mainWindow.webContents.send('log', 'Obtained ' + followers.length + ' followers');
     mainWindow.webContents.send('log', 'Start following');
-    await Follow.follow(token, followers);
-    mainWindow.webContents.send('log', 'Followed ' + ' users');
+    let followedamount = await Follow.follow(username+":"+token, followers).length;
+    mainWindow.webContents.send('log', 'Followed ' + followedamount + ' users');
   }
 
   // UNFOLLOW FOLLOWERS
-  console.log(data.unfollowFollowers);
   if(data.unfollowFollowers){
-    mainWindow.webContents.send('log', 'Collecting your followers');
-    let followers = await Follower.getFollowers(token, data.followAmount, response.id); // Change this to your own followers
-    mainWindow.webContents.send('log', 'Obtained ' + followers.length + ' followers');
-    mainWindow.webContents.send('log', 'Start following');
-    await Follow.follow(token, followers);
-    mainWindow.webContents.send('log', 'Followed ' + ' users');
+    // mainWindow.webContents.send('log', 'Collecting your followers');
+    // let unfollowers = await Follower.getFollowers(token, data.followAmount, uuid); // Change the followamount to size own followers
+    // mainWindow.webContents.send('log', 'Obtained ' + followers.length + ' followers');
+    // mainWindow.webContents.send('log', 'Start unfollowing');
+    // let unfollowedamount = await Unfollow.unfollow(username+":"+token, unfollowers).length;
+    // mainWindow.webContents.send('log', 'Followed ' + unfollowedamount + ' users');
   }
 
   // UNFOLLOW FOLLOWING
-  console.log(data.unfollow);
   if(data.unfollow){
-    mainWindow.webContents.send('log', 'Start unfollowing users');
+    mainWindow.webContents.send('log', 'Collecting your followings');
+    let followings = await Follower.getFollowing(token, data.unfollowAmount, uuid); // Change the followamount to size own followers
+    mainWindow.webContents.send('log', 'Obtained ' + followings.length + ' followings');
+    mainWindow.webContents.send('log', 'Start unfollowing');
+    let unfollowdamount = await Unfollow.unfollow(username+":"+token, followings);
+    mainWindow.webContents.send('log', 'unFollowed ' + ' users');
 
   }
 

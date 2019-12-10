@@ -42,16 +42,27 @@
             <input type="number" id="userFollowAmount" name="followAmount" min="1" max="10000" disabled>
             <br>
             <div class="divider"></div>
-            <label class="container"> Unfollow followers 
-                <input type="checkbox" id="unfollowFollowers" value="unfollowFollowers">
-                <span class="checkmark"></span>
-            </label>
+            <div class="row">
+              <div class="column">
+                <label class="container"> Unfollow followers 
+                  <input type="checkbox" id="unfollowFollowers" value="unfollowFollowers">
+                  <span class="checkmark"></span>             
+                </label>
+              </div>
+              <div class="column">
+                <label class="container"> Unfollow non-followers (3 day) 
+                  <input type="checkbox" id="unfollowNonFollow" value="unfollowNonFollow">
+                  <span class="checkmark"></span>
+                </label> 
+              </div>
+            </div>
+
             <br>
             <div class="divider"></div>
-            <label class="container"> Unfollow users 
-                <input type="checkbox" id="enableUnfollow" value="unfollow">
-                <span class="checkmark"></span>
-            </label> 
+                <label class="container"> Unfollow followers 
+                  <input type="checkbox" id="enableUnfollow" value="enableUnfollow">
+                  <span class="checkmark"></span>             
+                </label>
             <br>
             Amount:<br>
             <input type="number" id="unfollowAmount" name="unfollowAmount" min="1" max="10000" disabled>

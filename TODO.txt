@@ -3,3 +3,5 @@
 3. Error messages
 4. Amounts must be bigger than one
 5. Fix button changing 
+6. Make sure to abort everything when stop is pressed
+
