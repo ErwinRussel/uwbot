@@ -1,7 +1,7 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
-const Store = require('./store.js')
+const Store = require('electron-store');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -22,13 +22,12 @@ const store = new Store({
   }
 });
 
-
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
     width: 600,
     height: 800,
-    icon: __dirname + '/uwicon.icns',
+    icon: path.join(__dirname, 'assets/uwicon.icns'),
     titleBarStyle: 'hiddenInset',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -43,13 +42,7 @@ function createWindow () {
   mainWindow.webContents.on('did-finish-load', function() {
     mainWindow.webContents.send('usr', store.get('userName'));
   });
-  
- 
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
-
-
-  
+    
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
@@ -109,15 +102,15 @@ ipcMain.on('form-submission', async function (event, data) {
 
   // UNFOLLOW FOLLOWERS
   if(data.unfollowFollowers){
-    // mainWindow.webContents.send('log', 'Collecting your followers');
-    // let unfollowers = await Follower.getFollowers(token, data.followAmount, uuid); // Change the followamount to size own followers
-    // mainWindow.webContents.send('log', 'Obtained ' + followers.length + ' followers');
-    // mainWindow.webContents.send('log', 'Start unfollowing');
-    // let unfollowedamount = await Unfollow.unfollow(username+":"+token, unfollowers).length;
-    // mainWindow.webContents.send('log', 'Followed ' + unfollowedamount + ' users');
+    mainWindow.webContents.send('log', 'Collecting your followers');
+    let unfollowers = await Follower.getFollowers(token, 10000, uuid); // Change the followamount to size own followers
+    mainWindow.webContents.send('log', 'Obtained ' + unfollowers.length + ' followers');
+    mainWindow.webContents.send('log', 'Start unfollowing');
+    let unfollowedamount = await Unfollow.unfollow(username+":"+token, unfollowers).length;
+    mainWindow.webContents.send('log', 'Followed ' + unfollowedamount + ' users');
   }
 
-  // UNFOLLOW FOLLOWING
+  // UNFOLLOW FOLLOWINGS
   if(data.unfollow){
     mainWindow.webContents.send('log', 'Collecting your followings');
     let followings = await Follower.getFollowing(token, data.unfollowAmount, uuid); // Change the followamount to size own followers
@@ -127,6 +120,9 @@ ipcMain.on('form-submission', async function (event, data) {
     mainWindow.webContents.send('log', 'unFollowed ' + ' users');
 
   }
+
+  console.log(process._getActiveHandles());
+  console.log(process._getActiveRequests());
 
   mainWindow.webContents.send('log', 'Done');
   mainWindow.webContents.send('btn', 'Back');

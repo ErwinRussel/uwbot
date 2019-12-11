@@ -1,7 +1,30 @@
 1. Email Conformance
-2. Save previous username 
 3. Error messages
-4. Amounts must be bigger than one
-5. Fix button changing 
 6. Make sure to abort everything when stop is pressed
 
+
+// Try edit message
+var currentDate = new Date();
+
+data1 = {
+  id: 123456,
+  datetime: currentDate
+}
+
+data2 = {
+  id: 123456,
+  datetime: currentDate
+}
+
+users = []
+
+users.push(data1);
+
+users.push(data2);
+
+console.log(users[0].datetime);
+
+users[0].datetime.setDate(users[0].datetime.getDate() + 3);
+
+
+console.log(users[0].datetime);

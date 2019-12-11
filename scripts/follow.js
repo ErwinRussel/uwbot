@@ -1,10 +1,13 @@
 var request = require("request");
+const Store = require('electron-store');
 
 let promises = [];
 
 module.exports = class Follow {
     constructor(arg){
         console.log(arg);
+
+
     }
 
     static followUser = async function(base64token, userId) {
@@ -40,6 +43,8 @@ module.exports = class Follow {
         let base64token = buff.toString('base64');
 
         let promises = [];
+
+        // Instantiate Store Class
 
         for(const user of Object.keys(users)){
             promises.push( await Follow.followUser(base64token, users[user].user_id));
