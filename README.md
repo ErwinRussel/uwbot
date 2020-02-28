@@ -1,4 +1,4 @@
-[logo]: assets/uwicon.png "UWbot marker"
+[logo]: assets/uwlogo.png "UWbot logo"
 
 ![alt text][logo]
 
